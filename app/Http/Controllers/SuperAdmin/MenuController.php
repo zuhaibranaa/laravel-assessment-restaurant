@@ -81,7 +81,8 @@ class MenuController extends Controller
     }
     public function showShareForm($id)
     {
-        return Inertia::render('SuperAdmin/ShareMenu', compact('id'));
+        $restaurants = Restaurant::all();
+        return Inertia::render('SuperAdmin/ShareMenu', compact('id', 'restaurants'));
     }
 
     public function share(Request $request, int $id)
