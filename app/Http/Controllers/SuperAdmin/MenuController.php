@@ -5,8 +5,8 @@ use App\Http\Controllers\Controller;
 
 use App\Models\Menu;
 use App\Models\Restaurant;
-use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Storage;
 use Inertia\Inertia;
 
 class MenuController extends Controller
@@ -42,30 +42,46 @@ class MenuController extends Controller
 
     public function show(int $id)
     {
-        $menu = Menu::with('items')->findOrFail($id);
-        $restaurants = Restaurant::all();
+        $menu = Menu::with(['items', 'restaurant'])->findOrFail($id);
 
-        return Inertia::render('SuperAdmin/ShowMenu', [
-            'menu' => $menu,
-            'restaurants' => $restaurants,
+        return Inertia::render('SuperAdmin/ViewMenu', [
+            'menu' => $menu
         ]);
+    }
+
+    public function showAddMenuItemForm($id)
+    {
+        return Inertia::render('SuperAdmin/AddMenuItem', compact('id'));
     }
 
     public function addItem(Request $request, int $id)
     {
         $request->validate([
-            'name' => 'required|string|max:255',
+            'item_name' => 'required|string|max:255',
             'price' => 'required|numeric|min:0',
+            'image' => 'nullable|image|mimes:jpeg,png,jpg,gif,svg|max:2048',
         ]);
 
         $menu = Menu::findOrFail($id);
 
+        $imagePath = null;
+
+        if ($request->hasFile('image')) {
+            $image = $request->file('image');
+            $imagePath = Storage::disk('public')->put('menu_items', $image);
+        }
+
         $menu->items()->create([
-            'name' => $request->name,
+            'item_name' => $request->item_name,
             'price' => $request->price,
+            'image' => $imagePath ?? 'default.png', // fallback or default image
         ]);
 
         return redirect()->back()->with('message', 'Menu item added successfully.');
+    }
+    public function showShareForm($id)
+    {
+        return Inertia::render('SuperAdmin/ShareMenu', compact('id'));
     }
 
     public function share(Request $request, int $id)
