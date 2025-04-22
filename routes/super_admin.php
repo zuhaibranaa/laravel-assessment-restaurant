@@ -29,10 +29,6 @@ Route::prefix('super_admin/')->middleware(['auth', 'verified', 'role:super_admin
     Route::controller(MenuItemController::class)->group(function () {
 
     });
-
-    Route::get('menu', function () {
-        return Inertia::render('Menu');
-    })->middleware(['auth', 'verified'])->name('menu');
 });
 
 

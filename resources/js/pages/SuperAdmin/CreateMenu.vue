@@ -1,16 +1,15 @@
 <script setup lang="ts">
 import AppLayout from '@/layouts/AppLayout.vue';
 import { Head, useForm } from '@inertiajs/vue3';
-const { auth, users } = defineProps(['auth', 'users']);
+const { auth, restaurants } = defineProps(['auth', 'restaurants']);
 
 const form = useForm({
     name: '',
-    location: '',
-    owner_id: ''
+    restaurant_id: ''
 });
 
 const submit = () => {
-    form.post(`/${auth.user.role}/restaurant`, {
+    form.post(`/${auth.user.role}/menu`, {
         onSuccess: () => {
             form.reset();
         },
@@ -19,11 +18,11 @@ const submit = () => {
 </script>
 
 <template>
-    <Head title="Create Restaurant" />
+    <Head title="Create Menu" />
 
     <AppLayout>
         <div class="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
-            <h2 class="mb-4 text-xl font-semibold">Add New Restaurant</h2>
+            <h2 class="mb-4 text-xl font-semibold">Add New Menu</h2>
 
             <form @submit.prevent="submit" class="space-y-4">
                 <div>
@@ -32,18 +31,13 @@ const submit = () => {
                     <div v-if="form.errors.name" class="text-sm text-red-500">{{ form.errors.name }}</div>
                 </div>
 
-                <div>
-                    <label class="mb-1 block font-medium">Location</label>
-                    <input v-model="form.location" type="text" class="w-full rounded border px-4 py-2" required />
-                    <div v-if="form.errors.location" class="text-sm text-red-500">{{ form.errors.location }}</div>
-                </div>
 
                 <div>
-                    <label class="mb-1 block font-medium">Owner</label>
-                    <select v-model="form.owner_id" type="text" class="w-full rounded border px-4 py-2" required >
-                        <option v-for="user in users" :value="user.id">{{user.name}}</option>
+                    <label class="mb-1 block font-medium">Restaurant</label>
+                    <select v-model="form.restaurant_id" type="text" class="w-full rounded border px-4 py-2" required >
+                        <option v-for="restaurant in restaurants" :value="restaurant.id">{{restaurant.name}}</option>
                     </select>
-                    <div v-if="form.errors.owner_id" class="text-sm text-red-500">{{ form.errors.owner_id }}</div>
+                    <div v-if="form.errors.restaurant_id" class="text-sm text-red-500">{{ form.errors.restaurant_id }}</div>
                 </div>
 
                 <button type="submit" class="rounded bg-blue-600 px-4 py-2 text-white hover:bg-blue-700" :disabled="form.processing">Create</button>

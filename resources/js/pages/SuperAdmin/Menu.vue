@@ -18,9 +18,9 @@ const breadcrumbs: BreadcrumbItem[] = [
         <div class="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
             <div class="rounded-xl border bg-white p-4 dark:bg-gray-900">
                 <div class="mb-4 flex items-center justify-between">
-                    <h2 class="text-xl font-semibold">Restaurant List</h2>
+                    <h2 class="text-xl font-semibold">Menus</h2>
                     <Link :href="`/${auth.user.role}/menu/create`" class="inline-block rounded bg-green-600 px-4 py-2 text-white hover:bg-green-700">
-                        + Add Restaurant
+                        + Add Menu
                     </Link>
                 </div>
                 <table id="restaurant-table" class="display w-full text-left">
@@ -28,8 +28,7 @@ const breadcrumbs: BreadcrumbItem[] = [
                         <tr>
                             <th>ID</th>
                             <th>Name</th>
-                            <th>Location</th>
-                            <th>Owner</th>
+                            <th>Restaurant</th>
                             <th>Shared Menu</th>
                             <th>Menu</th>
                             <th>Actions</th>
