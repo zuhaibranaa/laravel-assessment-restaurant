@@ -13,19 +13,8 @@ class MenuController extends Controller
 {
     public function all()
     {
-        $menus = Menu::with(['items','restaurant.owner'])
+        $menus = Menu::with(['items','restaurant.owner', 'restaurant.sharedMenu'])
             ->get();
-//            ->map(function ($restaurant) {
-//                return [
-//                    'id' => $restaurant->id,
-//                    'name' => $restaurant->name,
-//                    'owner' => $restaurant->owner,
-//                    'location' => $restaurant->location,
-//                    'is_using_shared_menu' => !is_null($restaurant->shared_menu_id),
-//                    'menu_source_name' => $restaurant->sharedMenu?->name ?? $restaurant->menu?->name,
-//                    'menu_id' => $restaurant->shared_menu_id ?? $restaurant->menu?->id,
-//                ];
-//            });
 
         return Inertia::render('SuperAdmin/Menu', [
             'menus' => $menus
@@ -46,6 +35,49 @@ class MenuController extends Controller
     }
     public function create(){
         $restaurants = Restaurant::all();
-        return Inertia::render('SuperAdmin/CreateRestaurant', compact('restaurants'));
+        return Inertia::render('SuperAdmin/CreateMenu', compact('restaurants'));
+    }
+
+
+
+    public function show(int $id)
+    {
+        $menu = Menu::with('items')->findOrFail($id);
+        $restaurants = Restaurant::all();
+
+        return Inertia::render('SuperAdmin/ShowMenu', [
+            'menu' => $menu,
+            'restaurants' => $restaurants,
+        ]);
+    }
+
+    public function addItem(Request $request, int $id)
+    {
+        $request->validate([
+            'name' => 'required|string|max:255',
+            'price' => 'required|numeric|min:0',
+        ]);
+
+        $menu = Menu::findOrFail($id);
+
+        $menu->items()->create([
+            'name' => $request->name,
+            'price' => $request->price,
+        ]);
+
+        return redirect()->back()->with('message', 'Menu item added successfully.');
+    }
+
+    public function share(Request $request, int $id)
+    {
+        $request->validate([
+            'restaurant_ids' => 'required|array',
+            'restaurant_ids.*' => 'exists:restaurants,id',
+        ]);
+
+        $menu = Menu::findOrFail($id);
+        Restaurant::whereIn('id', $request->restaurant_ids)->update(['shared_menu_id', $menu->id]);
+
+        return redirect()->back()->with('message', 'Menu shared successfully.');
     }
 }

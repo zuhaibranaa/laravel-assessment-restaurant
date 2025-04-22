@@ -29,17 +29,20 @@ const breadcrumbs: BreadcrumbItem[] = [
                             <th>ID</th>
                             <th>Name</th>
                             <th>Restaurant</th>
-                            <th>Shared Menu</th>
-                            <th>Menu</th>
+                            <th>Using Shared</th>
                             <th>Actions</th>
                         </tr>
                     </thead>
                     <tbody>
-                        <tr v-for="menu in menus" :key="menu.id">
+                        <tr class="h-10" v-for="menu in menus" :key="menu.id">
                             <td>{{ menu.id }}</td>
                             <td>{{ menu.name }}</td>
+                            <td>{{ menu.restaurant.name }}</td>
+                            <td>{{ menu.restaurant.useSharedMenu ? 'True': 'False' }}</td>
                             <td>
-                                <Link :href="`/admin/restaurants/${menu.id}`" class="text-blue-600 hover:underline"> View </Link>
+                                <Link :href="`/${auth.user.role}/menu/${menu.id}/view`" class="rounded bg-blue-800 p-2 mx-1 my-2 size-0.5 text-xs text-white"> View </Link>
+                                <Link :href="`/${auth.user.role}/menu/${menu.id}/add`" class="rounded bg-green-800 p-2 mx-1 my-2 size-0.5 text-xs text-white"> Add Menu Item </Link>
+                                <Link :href="`/${auth.user.role}/menu/${menu.id}/share`" class="rounded bg-indigo-800 p-2 mx-1 my-2 size-0.5 text-xs text-white"> Share </Link>
                             </td>
                         </tr>
                     </tbody>

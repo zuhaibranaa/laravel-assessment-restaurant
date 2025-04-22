@@ -41,8 +41,9 @@ const breadcrumbs: BreadcrumbItem[] = [
                             <td>{{ restaurant.name }}</td>
                             <td>{{ restaurant.location }}</td>
                             <td>{{ restaurant.owner.name }}</td>
-                            <td>{{ restaurant.shared_menu?.name ?? '—' }}</td>
-                            <td>{{ restaurant.menu?.name ?? '—' }}</td>
+                            <td>{{ restaurant.useSharedMenu ? 'True': 'False' }}</td>
+                            <td v-if="restaurant.useSharedMenu">{{ restaurant.sharedMenu?.name ?? '—' }}</td>
+                            <td v-else>{{ restaurant.menu?.name ?? '—' }}</td>
                             <td>
                                 <Link :href="`/admin/restaurants/${restaurant.id}`" class="text-blue-600 hover:underline"> View </Link>
                             </td>

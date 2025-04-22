@@ -17,6 +17,7 @@ return new class extends Migration
             $table->string('location');
             $table->foreignId('owner_id')->constrained('users')->onDelete('cascade');
             $table->foreignId('shared_menu_id')->nullable()->constrained('menus')->nullOnDelete();
+            $table->boolean('useSharedMenu')->default(false);
             $table->timestamps();
         });
     }

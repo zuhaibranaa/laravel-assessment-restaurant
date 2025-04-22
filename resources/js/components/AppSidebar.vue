@@ -10,23 +10,23 @@ import AppLogo from './AppLogo.vue';
 import { Page } from '@inertiajs/core';
 const page: Page = usePage();
 const role: string = page.props.auth.user.role;
-const mainNavItems: NavItem[] = [
-    {
-        title: 'Dashboard',
-        href: `/${role}/dashboard`,
-        icon: LayoutGrid,
-    },
-    {
+const mainNavItems: NavItem[] = [{
+    title: 'Dashboard',
+    href: `/${role}/dashboard`,
+    icon: LayoutGrid,
+}];
+if(role !== 'admin'){
+    mainNavItems.push({
         title: 'Restaurant',
         href: `/${role}/restaurant`,
         icon: HandPlatter,
-    },
-    {
-        title: 'Menu',
-        href: `/${role}/menu`,
-        icon: BookOpen,
-    },
-];
+    })
+}
+mainNavItems.push({
+    title: 'Menu',
+    href: `/${role}/menu`,
+    icon: BookOpen,
+});
 
 const footerNavItems: NavItem[] = [];
 </script>

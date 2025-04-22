@@ -1,8 +1,19 @@
 <script setup lang="ts">
 import AppLayout from '@/layouts/AppLayout.vue';
 import { Head, useForm } from '@inertiajs/vue3';
+import type { BreadcrumbItem } from '@/types';
 const { auth, restaurants } = defineProps(['auth', 'restaurants']);
 
+const breadcrumbs: BreadcrumbItem[] = [
+    {
+        title: 'Menu',
+        href: `/${auth.user.role}/menu`,
+    },
+    {
+        title: 'Create',
+        href: `/${auth.user.role}/menu/create`,
+    },
+];
 const form = useForm({
     name: '',
     restaurant_id: ''
@@ -20,7 +31,7 @@ const submit = () => {
 <template>
     <Head title="Create Menu" />
 
-    <AppLayout>
+    <AppLayout :breadcrumbs="breadcrumbs">
         <div class="flex h-full flex-1 flex-col gap-4 rounded-xl p-4">
             <h2 class="mb-4 text-xl font-semibold">Add New Menu</h2>
 
