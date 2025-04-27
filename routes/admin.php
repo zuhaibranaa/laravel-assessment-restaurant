@@ -9,13 +9,12 @@ Route::prefix('admin/')->middleware(['auth', 'verified', 'role:admin'])->name('a
     })->middleware(['auth', 'verified'])->name('dashboard');
 
     Route::controller(MenuController::class)->group(function () {
-        Route::get('menu', 'all')->name('menu');
-        Route::post('menu', 'store');
-        Route::get('menu/create', 'create')->name('menu.create');
+        Route::get('restaurant', 'all')->name('restaurant');
+        Route::post('sharedToggle', 'toggleShared')->name('sharedToggle');
         Route::get('menu/{id}/view', 'view')->name('menu.view');
-        Route::get('menu/{id}/add', 'showAdd')->name('menu.add');
+        Route::get('menu/{id}/add', 'showAddMenuItemForm')->name('menu.add');
         Route::post('menu/{id}/add', 'addItem');
-        Route::get('menu/{id}/share', 'showShare')->name('menu.share');
+        Route::get('menu/{id}/share', 'showShareForm')->name('menu.share');
         Route::post('menu/{id}/share', 'share');
     });
 });

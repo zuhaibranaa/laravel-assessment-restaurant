@@ -4,29 +4,32 @@ import NavMain from '@/components/NavMain.vue';
 import NavUser from '@/components/NavUser.vue';
 import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuButton, SidebarMenuItem } from '@/components/ui/sidebar';
 import { type NavItem } from '@/types';
-import { Link, usePage } from '@inertiajs/vue3';
-import { BookOpen, LayoutGrid, HandPlatter } from 'lucide-vue-next';
-import AppLogo from './AppLogo.vue';
 import { Page } from '@inertiajs/core';
+import { Link, usePage } from '@inertiajs/vue3';
+import { BookOpen, HandPlatter, LayoutGrid } from 'lucide-vue-next';
+import AppLogo from './AppLogo.vue';
+
 const page: Page = usePage();
 const role: string = page.props.auth.user.role;
-const mainNavItems: NavItem[] = [{
-    title: 'Dashboard',
-    href: `/${role}/dashboard`,
-    icon: LayoutGrid,
-}];
-if(role !== 'admin'){
-    mainNavItems.push({
+const mainNavItems: NavItem[] = [
+    {
+        title: 'Dashboard',
+        href: `/${role}/dashboard`,
+        icon: LayoutGrid,
+    },
+    {
         title: 'Restaurant',
         href: `/${role}/restaurant`,
         icon: HandPlatter,
-    })
+    },
+];
+if (role !== 'admin') {
+    mainNavItems.push({
+        title: 'Menu',
+        href: `/${role}/menu`,
+        icon: BookOpen,
+    });
 }
-mainNavItems.push({
-    title: 'Menu',
-    href: `/${role}/menu`,
-    icon: BookOpen,
-});
 
 const footerNavItems: NavItem[] = [];
 </script>
