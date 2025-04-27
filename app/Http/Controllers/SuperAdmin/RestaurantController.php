@@ -1,6 +1,7 @@
 <?php
 
 namespace App\Http\Controllers\SuperAdmin;
+
 use App\Http\Controllers\Controller;
 
 use App\Models\Restaurant;
@@ -12,26 +13,15 @@ class RestaurantController extends Controller
 {
     public function all()
     {
-        $restaurants = Restaurant::with(['owner','menu', 'sharedMenu'])
-            ->get()
-            ->map(function ($restaurant) {
-                return [
-                    'id' => $restaurant->id,
-                    'name' => $restaurant->name,
-                    'owner' => $restaurant->owner,
-                    'location' => $restaurant->location,
-                    'is_using_shared_menu' => !is_null($restaurant->shared_menu_id),
-                    'menu_source_name' => $restaurant->sharedMenu?->name ?? $restaurant->menu?->name,
-                    'menu_id' => $restaurant->shared_menu_id ?? $restaurant->menu?->id,
-                ];
-            });
+        $restaurants = Restaurant::with(['owner', 'menu', 'sharedMenu'])->get();
 
         return Inertia::render('SuperAdmin/Restaurant', [
             'restaurants' => $restaurants
         ]);
     }
 
-    public function store(Request $request){
+    public function store(Request $request)
+    {
         $request->validate([
             'name' => 'required|string',
             'location' => 'required|string',
@@ -45,7 +35,9 @@ class RestaurantController extends Controller
         ]);
         return redirect()->route('super_admin.restaurant')->with(['message' => 'Restaurant Created Successfully']);
     }
-    public function create(){
+
+    public function create()
+    {
         $users = User::where('role', 'admin')->get();
         return Inertia::render('SuperAdmin/CreateRestaurant', compact('users'));
     }

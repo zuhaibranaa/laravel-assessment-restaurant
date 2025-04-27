@@ -7,6 +7,7 @@ use Illuminate\Database\Eloquent\Model;
 class Restaurant extends Model
 {
 
+    protected $appends = ['active_menu'];
     protected $fillable = [
         'name',
         'location',
@@ -20,6 +21,13 @@ class Restaurant extends Model
     public function menu()
     {
         return $this->hasOne(Menu::class);
+    }
+
+    public function getActiveMenuAttribute(){
+        if($this->is_using_shared_menu){
+            return $this->sharedMenu;
+        }
+        return $this->menu;
     }
 
     // If using a shared menu
